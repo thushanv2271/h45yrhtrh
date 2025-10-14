@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "J8ADC/zlbMU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ThushanVithana\\Source\\Repos\\SaralBackend\\src\\Domain\\Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ThushanVithana\\.nuget\\packages\\sonaranalyzer.csharp\\10.9.0.115408\\sonaranalyzer.csharp.10.9.0.115408.nupkg.sha512"
+  ],
+  "logs": []
+}
