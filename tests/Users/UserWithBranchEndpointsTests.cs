@@ -8,6 +8,7 @@
 //using System.Net;
 //using System.Net.Http.Json;
 //using Xunit;
+//using System.Globalization;
 
 //namespace IntegrationTests.Users;
 
@@ -26,8 +27,8 @@
 //    public async Task RegisterUser_ShouldReturnOk_WithValidBranch()
 //    {
 //        // Arrange
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch = await CreateTestBranchAsync(organization.Id, "Main Branch", "MB001");
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch = await CreateTestBranchAsync(organization.Id, "Main Branch", "MB001");
 
 //        var request = new RegisterUserRequest(
 //            Email: "user@test.com",
@@ -42,12 +43,12 @@
 
 //        // Assert
 //        response.StatusCode.Should().Be(HttpStatusCode.OK);
-//        var result = await response.Content.ReadFromJsonAsync<RegisterUserResponse>();
+//        RegisterUserResponse? result = await response.Content.ReadFromJsonAsync<RegisterUserResponse>();
 //        result.Should().NotBeNull();
 //        result!.UserId.Should().NotBeEmpty();
 
 //        // Verify in database
-//        var user = await DbContext.Users
+//        User? user = await DbContext.Users
 //            .FirstOrDefaultAsync(u => u.Id == result.UserId);
 //        user.Should().NotBeNull();
 //        user!.Email.Should().Be("user@test.com");
@@ -80,8 +81,8 @@
 //    public async Task RegisterUser_ShouldCreateMultipleUsersInSameBranch()
 //    {
 //        // Arrange
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch = await CreateTestBranchAsync(organization.Id, "Shared Branch", "SB001");
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch = await CreateTestBranchAsync(organization.Id, "Shared Branch", "SB001");
 
 //        var user1Request = new RegisterUserRequest(
 //            Email: "user1@test.com",
@@ -100,14 +101,14 @@
 //        );
 
 //        // Act
-//        var response1 = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", user1Request);
-//        var response2 = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", user2Request);
+//        HttpResponseMessage response1 = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", user1Request);
+//        HttpResponseMessage response2 = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", user2Request);
 
 //        // Assert
 //        response1.StatusCode.Should().Be(HttpStatusCode.OK);
 //        response2.StatusCode.Should().Be(HttpStatusCode.OK);
 
-//        var usersInBranch = await DbContext.Users
+//        List<User> usersInBranch = await DbContext.Users
 //            .Where(u => u.BranchId == branch.Id)
 //            .ToListAsync();
 //        usersInBranch.Should().HaveCount(2);
@@ -121,10 +122,10 @@
 //    public async Task UpdateUser_ShouldReturnOk_WhenChangingBranch()
 //    {
 //        // Arrange
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch1 = await CreateTestBranchAsync(organization.Id, "Branch 1", "BR001");
-//        var branch2 = await CreateTestBranchAsync(organization.Id, "Branch 2", "BR002");
-//        var user = await CreateTestUserAsync("user@test.com", branch1.Id);
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch1 = await CreateTestBranchAsync(organization.Id, "Branch 1", "BR001");
+//        Branch branch2 = await CreateTestBranchAsync(organization.Id, "Branch 2", "BR002");
+//        User user = await CreateTestUserAsync("user@test.com", branch1.Id);
 
 //        var request = new UpdateUserRequest(
 //            UserId: user.Id,
@@ -143,7 +144,7 @@
 
 //        // Detach and verify
 //        DbContext.Entry(user).State = EntityState.Detached;
-//        var updatedUser = await DbContext.Users
+//        User? updatedUser = await DbContext.Users
 //            .AsNoTracking()
 //            .FirstOrDefaultAsync(u => u.Id == user.Id);
 //        updatedUser!.BranchId.Should().Be(branch2.Id);
@@ -153,9 +154,9 @@
 //    public async Task UpdateUser_ShouldReturnOk_WhenRemovingBranch()
 //    {
 //        // Arrange
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch = await CreateTestBranchAsync(organization.Id, "Branch", "BR001");
-//        var user = await CreateTestUserAsync("user@test.com", branch.Id);
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch = await CreateTestBranchAsync(organization.Id, "Branch", "BR001");
+//        User user = await CreateTestUserAsync("user@test.com", branch.Id);
 
 //        var request = new UpdateUserRequest(
 //            UserId: user.Id,
@@ -173,7 +174,7 @@
 //        response.StatusCode.Should().Be(HttpStatusCode.OK);
 
 //        DbContext.Entry(user).State = EntityState.Detached;
-//        var updatedUser = await DbContext.Users
+//        User? updatedUser = await DbContext.Users
 //            .AsNoTracking()
 //            .FirstOrDefaultAsync(u => u.Id == user.Id);
 //        updatedUser!.BranchId.Should().BeNull();
@@ -183,9 +184,9 @@
 //    public async Task UpdateUser_ShouldReturnOk_WhenKeepingSameBranch()
 //    {
 //        // Arrange
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch = await CreateTestBranchAsync(organization.Id, "Branch", "BR001");
-//        var user = await CreateTestUserAsync("user@test.com", branch.Id);
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch = await CreateTestBranchAsync(organization.Id, "Branch", "BR001");
+//        User user = await CreateTestUserAsync("user@test.com", branch.Id);
 
 //        var request = new UpdateUserRequest(
 //            UserId: user.Id,
@@ -203,7 +204,7 @@
 //        response.StatusCode.Should().Be(HttpStatusCode.OK);
 
 //        DbContext.Entry(user).State = EntityState.Detached;
-//        var updatedUser = await DbContext.Users
+//        User? updatedUser = await DbContext.Users
 //            .AsNoTracking()
 //            .FirstOrDefaultAsync(u => u.Id == user.Id);
 //        updatedUser!.BranchId.Should().Be(branch.Id);
@@ -213,7 +214,7 @@
 //    public async Task UpdateUser_ShouldReturnNotFound_WhenBranchDoesNotExist()
 //    {
 //        // Arrange
-//        var user = await CreateTestUserAsync("user@test.com", null);
+//        User user = await CreateTestUserAsync("user@test.com", null);
 //        var nonExistentBranchId = Guid.NewGuid();
 
 //        var request = new UpdateUserRequest(
@@ -244,8 +245,8 @@
 //    public async Task DeleteBranch_ShouldBePreventedWhenUsersExist()
 //    {
 //        // Arrange
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch = await CreateTestBranchAsync(organization.Id, "Branch with Users", "BU001");
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch = await CreateTestBranchAsync(organization.Id, "Branch with Users", "BU001");
 //        await CreateTestUserAsync("user@test.com", branch.Id);
 
 //        // Act
@@ -263,9 +264,9 @@
 //    public async Task UserBranch_FullWorkflow()
 //    {
 //        // Create Organization and Branches
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch1 = await CreateTestBranchAsync(organization.Id, "Branch 1", "BR001");
-//        var branch2 = await CreateTestBranchAsync(organization.Id, "Branch 2", "BR002");
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch1 = await CreateTestBranchAsync(organization.Id, "Branch 1", "BR001");
+//        Branch branch2 = await CreateTestBranchAsync(organization.Id, "Branch 2", "BR002");
 
 //        // Register User with Branch 1
 //        var registerRequest = new RegisterUserRequest(
@@ -276,12 +277,12 @@
 //            BranchId: branch1.Id
 //        );
 
-//        var registerResponse = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", registerRequest);
+//        HttpResponseMessage registerResponse = await HttpClient.PostAsJsonAsync($"{BaseUrl}/register", registerRequest);
 //        registerResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-//        var registered = await registerResponse.Content.ReadFromJsonAsync<RegisterUserResponse>();
+//        RegisterUserResponse? registered = await registerResponse.Content.ReadFromJsonAsync<RegisterUserResponse>();
 
 //        // Verify User is in Branch 1
-//        var user = await DbContext.Users.FindAsync(registered!.UserId);
+//        User? user = await DbContext.Users.FindAsync(registered!.UserId);
 //        user!.BranchId.Should().Be(branch1.Id);
 
 //        // Transfer User to Branch 2
@@ -294,12 +295,12 @@
 //            BranchId: branch2.Id
 //        );
 
-//        var updateResponse = await HttpClient.PutAsJsonAsync($"{BaseUrl}", updateRequest);
+//        HttpResponseMessage updateResponse = await HttpClient.PutAsJsonAsync($"{BaseUrl}", updateRequest);
 //        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
 //        // Verify User is now in Branch 2
 //        DbContext.Entry(user).State = EntityState.Detached;
-//        var updatedUser = await DbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == registered.UserId);
+//        User? updatedUser = await DbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == registered.UserId);
 //        updatedUser!.BranchId.Should().Be(branch2.Id);
 
 //        // Remove Branch Assignment
@@ -312,14 +313,16 @@
 //            BranchId: null
 //        );
 
-//        var removeBranchResponse = await HttpClient.PutAsJsonAsync($"{BaseUrl}", removeBranchRequest);
+//        HttpResponseMessage removeBranchResponse = await HttpClient.PutAsJsonAsync($"{BaseUrl}", removeBranchRequest);
 //        removeBranchResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
 //        // Verify User has no branch
 //        DbContext.Entry(updatedUser).State = EntityState.Detached;
-//        var finalUser = await DbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == registered.UserId);
+//        User? finalUser = await DbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == registered.UserId);
 //        finalUser!.BranchId.Should().BeNull();
 //    }
+
+//    #endregion
 
 //    #region Authorization Tests with Branch Context
 
@@ -328,8 +331,8 @@
 //    {
 //        // Arrange
 //        await AuthenticateAsUserWithoutPermissionsAsync();
-//        var organization = await CreateTestOrganizationAsync();
-//        var branch = await CreateTestBranchAsync(organization.Id, "Test Branch", "TB001");
+//        Organization organization = await CreateTestOrganizationAsync();
+//        Branch branch = await CreateTestBranchAsync(organization.Id, "Test Branch", "TB001");
 
 //        var request = new RegisterUserRequest(
 //            Email: "user@test.com",
@@ -359,7 +362,7 @@
 //            Id = Guid.CreateVersion7(),
 //            Name = name,
 //            Code = code,
-//            Email = $"{code.ToLower()}@test.com",
+//            Email = $"{code.ToUpperInvariant().ToLowerInvariant()}@test.com",
 //            ContactNumber = "+94771234567",
 //            Address = "Test Address",
 //            IsActive = true,
@@ -384,7 +387,7 @@
 //            OrganizationId = organizationId,
 //            BranchName = branchName,
 //            BranchCode = branchCode,
-//            Email = string.IsNullOrEmpty(email) ? $"{branchCode.ToLower()}@test.com" : email,
+//            Email = string.IsNullOrEmpty(email) ? $"{branchCode.ToUpperInvariant().ToLowerInvariant()}@test.com" : email,
 //            ContactNumber = "+94771234567",
 //            Address = "Test Address",
 //            IsActive = true,
@@ -439,45 +442,6 @@
 //        Guid? BranchId);
 
 //    private record RegisterUserResponse(Guid UserId);
-
-//    private record UserResponse(
-//        Guid Id,
-//        string Email,
-//        string FirstName,
-//        string LastName);
-
-//    private record UserListResponse(
-//        Guid Id,
-//        string Email,
-//        string FirstName,
-//        string LastName,
-//        Guid? BranchId,
-//        string? BranchName,
-//        string? BranchCode,
-//        string UserStatus,
-//        DateTime CreatedAt,
-//        DateTime ModifiedAt);
-
-//    private record GetAllUsersRequest(
-//        int PageNumber,
-//        int PageSize,
-//        string? Search,
-//        UserFilters? Filters);
-
-//    private record UserFilters(
-//        Guid[]? BranchIds = null,
-//        UserStatus? Status = null,
-//        Guid[]? RoleIds = null);
-
-//    private record ExportUsersRequest(
-//        int PageNumber,
-//        int PageSize,
-//        string? Search,
-//        UserFilters? Filters);
-
-//    private record PaginatedResponse<T>(
-//        List<T> Items,
-//        int TotalCount);
 
 //    #endregion
 //}
