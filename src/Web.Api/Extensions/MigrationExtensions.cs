@@ -1,4 +1,4 @@
-﻿using Infrastructure.Database;
+using Infrastructure.Database;
 using Infrastructure.Database.Seeding;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,12 @@ public static class MigrationExtensions
     {
         using IServiceScope scope = app.ApplicationServices.CreateScope();
 
-        DatabaseSeeder seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
-        await seeder.SeedAsync();
+        // Try to get the seeder, but don't fail if it's not registered (e.g., in tests)
+        DatabaseSeeder? seeder = scope.ServiceProvider.GetService<DatabaseSeeder>();
+
+        if (seeder != null)
+        {
+            await seeder.SeedAsync();
+        }
     }
 }
