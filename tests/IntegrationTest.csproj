@@ -23,6 +23,7 @@
 		<ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
 		<ProjectReference Include="..\..\src\SharedKernel\SharedKernel.csproj" />
 		<ProjectReference Include="..\..\src\Web.Api\Web.Api.csproj" />
+		<ProjectReference Include="..\ArchitectureTests\ArchitectureTests.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
