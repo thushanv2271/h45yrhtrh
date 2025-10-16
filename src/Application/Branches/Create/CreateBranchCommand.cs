@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using Application.Abstractions.Messaging;
 
 namespace Application.Branches.Create;
+
+/// <summary>
+/// Command to create a new branch
+/// This is sent from the API to the handler
+/// </summary>
 public sealed record CreateBranchCommand(
     Guid OrganizationId,
     string BranchName,
@@ -13,4 +18,4 @@ public sealed record CreateBranchCommand(
     string Email,
     string ContactNumber,
     string Address
-) : ICommand<Guid>;
+) : ICommand<Guid>; // Returns: New branch's ID

@@ -1,4 +1,4 @@
-using Infrastructure.Database;
+﻿using Infrastructure.Database;
 using Infrastructure.Database.Seeding;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +9,6 @@ public static class MigrationExtensions
     public static void ApplyMigrations(this IApplicationBuilder app)
     {
         using IServiceScope scope = app.ApplicationServices.CreateScope();
-
         using ApplicationDbContext dbContext =
             scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -20,12 +19,16 @@ public static class MigrationExtensions
     {
         using IServiceScope scope = app.ApplicationServices.CreateScope();
 
-        // Try to get the seeder, but don't fail if it's not registered (e.g., in tests)
         DatabaseSeeder? seeder = scope.ServiceProvider.GetService<DatabaseSeeder>();
 
-        if (seeder != null)
+        if (seeder == null)
         {
-            await seeder.SeedAsync();
+            ILogger<DatabaseSeeder>? logger = scope.ServiceProvider.GetService<ILogger<DatabaseSeeder>>();
+            logger?.LogWarning("DatabaseSeeder not registered. Skipping database seeding.");
+            return;
         }
+
+        // Let exceptions propagate - they'll be caught by the global exception handler
+        await seeder.SeedAsync();
     }
 }

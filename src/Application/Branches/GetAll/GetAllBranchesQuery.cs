@@ -6,5 +6,10 @@ using System.Threading.Tasks;
 using Application.Abstractions.Messaging;
 
 namespace Application.Branches.GetAll;
+
+/// <summary>
+/// Query to get all branches
+/// Can optionally filter by organization
+/// </summary>
 public sealed record GetAllBranchesQuery(Guid? OrganizationId = null)
-    : IQuery<List<BranchResponse>>;
+    : IQuery<List<BranchResponse>>; // Returns: List of branches

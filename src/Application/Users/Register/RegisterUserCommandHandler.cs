@@ -12,6 +12,9 @@ using SharedKernel;
 
 namespace Application.Users.Register;
 
+/// <summary>
+/// Handler for user registration
+/// </summary>
 internal sealed class RegisterUserCommandHandler(
     IApplicationDbContext context,
     IPasswordHasher passwordHasher,
@@ -22,6 +25,7 @@ internal sealed class RegisterUserCommandHandler(
 {
     public async Task<Result<Guid>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
+        //Check if email already exists in the system
         if (await context.Users.AnyAsync(u => u.Email == command.Email, cancellationToken))
         {
             return Result.Failure<Guid>(UserErrors.EmailNotUnique);
@@ -52,6 +56,7 @@ internal sealed class RegisterUserCommandHandler(
             }
         }
 
+        //Generate a random temporary password
         string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
         string temporaryPassword = new string(Enumerable.Range(0, 10)
             .Select(_ =>
@@ -61,6 +66,7 @@ internal sealed class RegisterUserCommandHandler(
                 return chars[b[0] % chars.Length];
             }).ToArray());
 
+        //Create new user object
         var user = new User
         {
             Id = Guid.CreateVersion7(),
@@ -92,6 +98,7 @@ internal sealed class RegisterUserCommandHandler(
             }
         }
 
+        //Send welcome email with temporary credentials
         string websiteLink = $"{appConfiguration.FrontEndUrl}";
 
         await emailService.SendEmailAsync(
@@ -112,6 +119,7 @@ internal sealed class RegisterUserCommandHandler(
             """
         );
 
+        // Return the new user's ID
         return Result.Success(user.Id);
     }
 }

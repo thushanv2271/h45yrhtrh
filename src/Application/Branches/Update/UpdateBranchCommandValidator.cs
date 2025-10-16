@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using FluentValidation;
 
 namespace Application.Branches.Update;
+
+/// <summary>
+/// Validates UpdateBranchCommand before processing
+/// Checks that all required fields are present and valid
+/// </summary>
 internal sealed class UpdateBranchCommandValidator : AbstractValidator<UpdateBranchCommand>
 {
     public UpdateBranchCommandValidator()

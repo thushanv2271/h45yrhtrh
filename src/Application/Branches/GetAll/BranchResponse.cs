@@ -5,6 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Branches.GetAll;
+
+/// <summary>
+/// Response object containing branch information
+/// Used when sending branch data to the frontend
+/// </summary>
 public sealed record BranchResponse
 {
     public Guid Id { get; init; }

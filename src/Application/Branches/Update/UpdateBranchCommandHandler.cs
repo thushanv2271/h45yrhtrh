@@ -10,11 +10,17 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Branches.Update;
+
+/// <summary>
+/// Handles updating existing branches
+/// Updates branch details and validates email uniqueness
+/// </summary>
 internal sealed class UpdateBranchCommandHandler(IApplicationDbContext context)
     : ICommandHandler<UpdateBranchCommand>
 {
     public async Task<Result> Handle(UpdateBranchCommand command, CancellationToken cancellationToken)
     {
+        //Find the branch to update
         Branch? branch = await context.Branches
             .FirstOrDefaultAsync(b => b.Id == command.BranchId, cancellationToken);
 
@@ -32,6 +38,7 @@ internal sealed class UpdateBranchCommandHandler(IApplicationDbContext context)
             return Result.Failure(BranchErrors.EmailNotUnique);
         }
 
+        //Update branch properties
         branch.BranchName = command.BranchName;
         branch.Email = command.Email;
         branch.ContactNumber = command.ContactNumber;

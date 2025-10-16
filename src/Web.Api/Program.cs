@@ -54,10 +54,10 @@ app.UseSwaggerWithUi();
 app.ApplyMigrations();
 
 // Only seed database if not in testing environment
-if (!app.Environment.IsEnvironment("Testing"))
-{
-    await app.SeedDatabaseAsync();
-}
+//if (!app.Environment.IsEnvironment("Testing"))
+//{
+//    await app.SeedDatabaseAsync();
+//}
 
 app.MapHealthChecks("health", new HealthCheckOptions
 {

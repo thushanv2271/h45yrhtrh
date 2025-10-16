@@ -8,6 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Branches;
+
+/// <summary>
+/// Configures the Branch table in the database
+/// Defines columns, constraints, indexes, and relationships
+/// </summary>
 internal sealed class BranchConfiguration : IEntityTypeConfiguration<Branch>
 {
     public void Configure(EntityTypeBuilder<Branch> builder)

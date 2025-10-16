@@ -10,6 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Branches.Create;
+
+/// <summary>
+/// Handler for creating new branches
+/// </summary>
 internal sealed class CreateBranchCommandHandler(IApplicationDbContext context)
     : ICommandHandler<CreateBranchCommand, Guid>
 {
@@ -42,6 +46,7 @@ internal sealed class CreateBranchCommandHandler(IApplicationDbContext context)
             return Result.Failure<Guid>(BranchErrors.EmailNotUnique);
         }
 
+        //Create new object
         var branch = new Branch
         {
             Id = Guid.CreateVersion7(),
@@ -56,9 +61,11 @@ internal sealed class CreateBranchCommandHandler(IApplicationDbContext context)
             UpdatedAt = DateTime.UtcNow
         };
 
+        //Save to database
         context.Branches.Add(branch);
         await context.SaveChangesAsync(cancellationToken);
 
+        // Return the new branch ID
         return Result.Success(branch.Id);
     }
 }

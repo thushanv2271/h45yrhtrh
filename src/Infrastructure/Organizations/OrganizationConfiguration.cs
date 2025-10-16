@@ -11,6 +11,10 @@ namespace Infrastructure.Organizations;
 
 internal sealed class OrganizationConfiguration : IEntityTypeConfiguration<Organization>
 {
+
+    /// <summary>
+    /// Entity Framework configuration for Organization entity
+    /// </summary>
     public void Configure(EntityTypeBuilder<Organization> builder)
     {
         builder.HasKey(o => o.Id);

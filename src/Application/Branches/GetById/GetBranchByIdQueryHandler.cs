@@ -11,6 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Branches.GetById;
+
+/// <summary>
+/// Handles retrieving a single branch by ID
+/// Returns error if branch not found
+/// </summary>
 internal sealed class GetBranchByIdQueryHandler(IApplicationDbContext context)
     : IQueryHandler<GetBranchByIdQuery, BranchResponse>
 {
@@ -18,6 +23,8 @@ internal sealed class GetBranchByIdQueryHandler(IApplicationDbContext context)
         GetBranchByIdQuery query,
         CancellationToken cancellationToken)
     {
+        // Search for branch with matching ID
+        // Convert to response format (DTO)
         BranchResponse? branch = await context.Branches
             .Where(b => b.Id == query.BranchId)
             .Select(b => new BranchResponse
@@ -40,6 +47,6 @@ internal sealed class GetBranchByIdQueryHandler(IApplicationDbContext context)
             return Result.Failure<BranchResponse>(BranchErrors.NotFound(query.BranchId));
         }
 
-        return Result.Success(branch);
+        return Result.Success(branch); //Return the branch
     }
 }

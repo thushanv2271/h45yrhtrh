@@ -10,11 +10,17 @@ using Microsoft.EntityFrameworkCore;
 using SharedKernel;
 
 namespace Application.Branches.Delete;
+
+/// <summary>
+/// Handles branch deletion
+/// Checks if branch has users before allowing deletion
+/// </summary>
 internal sealed class DeleteBranchCommandHandler(IApplicationDbContext context)
     : ICommandHandler<DeleteBranchCommand>
 {
     public async Task<Result> Handle(DeleteBranchCommand command, CancellationToken cancellationToken)
     {
+        //Find the branch to delete
         Branch? branch = await context.Branches
             .FirstOrDefaultAsync(b => b.Id == command.BranchId, cancellationToken);
 
@@ -31,6 +37,7 @@ internal sealed class DeleteBranchCommandHandler(IApplicationDbContext context)
         {
             return Result.Failure(BranchErrors.HasAssignedUsers);
         }
+        //Delete the branch
         context.Branches.Remove(branch);
         await context.SaveChangesAsync(cancellationToken);
 

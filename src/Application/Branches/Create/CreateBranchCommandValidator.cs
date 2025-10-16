@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using FluentValidation;
 
 namespace Application.Branches.Create;
+
+/// <summary>
+/// Validates CreateBranchCommand before processing
+/// Checks that all required fields are present and valid
+/// </summary>
 internal sealed class CreateBranchCommandValidator : AbstractValidator<CreateBranchCommand>
 {
     public CreateBranchCommandValidator()
