@@ -9,8 +9,11 @@ using Domain.Organizations;
 using Domain.PasswordResetTokens;
 using Domain.PDTempData;
 using Domain.Permissions;
+using Domain.ProductCategories;
 using Domain.RolePermissions;
 using Domain.Roles;
+using Domain.Scenarios;
+using Domain.Segments;
 using Domain.Todos;
 using Domain.UserRoles;
 using Domain.Users;
@@ -49,6 +52,11 @@ public sealed class ApplicationDbContext(
     public DbSet<EfaConfiguration> EfaConfigurations { get; set; }
     public DbSet<Organization> Organizations { get; set; }
     public DbSet<Branch> Branches { get; set; }
+
+    public DbSet<ProductCategory> ProductCategories { get; set; }
+    public DbSet<Segment> Segments { get; set; }
+    public DbSet<Scenario> Scenarios { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

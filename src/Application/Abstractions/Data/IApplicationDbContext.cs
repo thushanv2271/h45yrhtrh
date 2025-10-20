@@ -8,8 +8,11 @@ using Domain.Organizations;
 using Domain.PasswordResetTokens;
 using Domain.PDTempData;
 using Domain.Permissions;
+using Domain.ProductCategories;
 using Domain.RolePermissions;
 using Domain.Roles;
+using Domain.Scenarios;
+using Domain.Segments;
 using Domain.Todos;
 using Domain.UserRoles;
 using Domain.Users;
@@ -44,6 +47,10 @@ public interface IApplicationDbContext
 
     DbSet<Organization> Organizations { get; }
     DbSet<Branch> Branches { get; }
+
+    DbSet<ProductCategory> ProductCategories { get; }
+    DbSet<Segment> Segments { get; }
+    DbSet<Scenario> Scenarios { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

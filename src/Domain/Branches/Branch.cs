@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using SharedKernel;
 
 namespace Domain.Branches;
+
+/// <summary>
+/// Branch entity - represents a physical branch or office location
+/// Each branch belongs to an organization and can have multiple users
+/// </summary>
 public sealed class Branch : Entity
 {
     public Guid Id { get; set; }

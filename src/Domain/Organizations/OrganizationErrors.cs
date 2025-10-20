@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using SharedKernel;
 
 namespace Domain.Organizations;
+
+/// <summary>
+/// Static class containing all possible error messages for organization operations
+/// Used to maintain consistency in error handling across the application
+/// </summary>
 public static class OrganizationErrors
 {
     public static Error NotFound(Guid id) => Error.NotFound(

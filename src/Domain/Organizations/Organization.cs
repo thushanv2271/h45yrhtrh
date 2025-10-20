@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using SharedKernel;
 
 namespace Domain.Organizations;
+
+/// <summary>
+/// Organization entity - represents a company or business
+/// Can have multiple branches under it
+/// </summary>
 public sealed class Organization : Entity
 {
     public Guid Id { get; set; }

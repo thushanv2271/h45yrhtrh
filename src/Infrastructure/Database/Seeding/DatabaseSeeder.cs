@@ -238,110 +238,39 @@ public sealed class DatabaseSeeder(
         }
 
         var organizations = new List<Organization>
-    {
-        new Organization
         {
-            Id = Guid.CreateVersion7(),
-            Name = "Azend Technologies",
-            Code = "AZEND",
-            Email = "info@azendtech.com",
-            ContactNumber = "+94 71 234 5678",
-            Address = "123 Galle Road, Colombo 03, Sri Lanka",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        },
-        new Organization
-        {
-            Id = Guid.CreateVersion7(),
-            Name = "Cora Analytics",
-            Code = "CORA",
-            Email = "contact@cora.com",
-            ContactNumber = "+44 20 7946 1234",
-            Address = "45 Baker Street, London, UK",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        },
-        new Organization
-        {
-            Id = Guid.CreateVersion7(),
-            Name = "Global Tech Solutions",
-            Code = "GLOBAL",
-            Email = "info@globaltech.com",
-            ContactNumber = "+1 555 123 4567",
-            Address = "500 Tech Park, San Francisco, CA, USA",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        },
-        new Organization
-        {
-            Id = Guid.CreateVersion7(),
-            Name = "Pacific Innovations",
-            Code = "PACIFIC",
-            Email = "hello@pacificinno.com",
-            ContactNumber = "+61 2 9876 5432",
-            Address = "88 Harbour Boulevard, Sydney, Australia",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        },
-        new Organization
-        {
-            Id = Guid.CreateVersion7(),
-            Name = "Nordic Systems",
-            Code = "NORDIC",
-            Email = "support@nordicsys.com",
-            ContactNumber = "+46 8 123 4567",
-            Address = "15 Storgatan, Stockholm, Sweden",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        },
-        new Organization
-        {
-            Id = Guid.CreateVersion7(),
-            Name = "Asia Pacific Ventures",
-            Code = "APAC",
-            Email = "contact@apacventures.com",
-            ContactNumber = "+65 6789 1234",
-            Address = "Marina Bay Tower, Singapore",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        },
-        new Organization
-        {
-            Id = Guid.CreateVersion7(),
-            Name = "Emerald Industries",
-            Code = "EMERALD",
-            Email = "info@emeraldind.com",
-            ContactNumber = "+353 1 234 5678",
-            Address = "67 O'Connell Street, Dublin, Ireland",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        },
-        new Organization
-        {
-            Id = Guid.CreateVersion7(),
-            Name = "Southern Cross Corp",
-            Code = "SOCROSS",
-            Email = "hello@southerncross.co.nz",
-            ContactNumber = "+64 9 876 5432",
-            Address = "120 Queen Street, Auckland, New Zealand",
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        }
-    };
+            new Organization
+            {
+                Id = Guid.CreateVersion7(),
+                Name = "Azend Technologies",
+                Code = "AZEND",
+                Email = "info@azendtech.com",
+                ContactNumber = "+94 71 234 5678",
+                Address = "Colombo, Sri Lanka",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            },
+            new Organization
+            {
+                Id = Guid.CreateVersion7(),
+                Name = "Cora Analytics",
+                Code = "CORA",
+                Email = "contact@cora.com",
+                ContactNumber = "+44 20 7946 1234",
+                Address = "London, UK",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            }
+        };
 
         context.Organizations.AddRange(organizations);
         await context.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Seeded {Count} Organizations.", organizations.Count);
     }
+
     //Seed Branches Data  
     private async Task SeedBranchesAsync(CancellationToken cancellationToken)
     {

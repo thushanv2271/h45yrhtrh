@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using SharedKernel;
 
 namespace Domain.Branches;
+
+/// <summary>
+/// Contains all error messages related to branch operations
+/// Used when branch operations fail (not found, duplicate, etc.)
+/// </summary>
 public static class BranchErrors
 {
     public static Error NotFound(Guid id) => Error.NotFound(
