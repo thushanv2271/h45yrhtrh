@@ -17,9 +17,9 @@ internal sealed class Create : IEndpoint
         {
             var command = new CreateScenarioCommand(
                 request.ProductCategoryId,
-                request.ProductCategoryName,
+               // request.ProductCategoryName,
                 request.SegmentId,
-                request.SegmentName,
+                //request.SegmentName,
                 [.. request.Scenarios.Select(s => new ScenarioItem(  // Simplified collection initialization
                     s.ScenarioName,
                     s.Probability,

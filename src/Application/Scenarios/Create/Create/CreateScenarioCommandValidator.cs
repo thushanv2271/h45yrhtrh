@@ -10,19 +10,9 @@ internal sealed class CreateScenarioCommandValidator : AbstractValidator<CreateS
             .NotEmpty()
             .WithMessage("Product category ID is required");
 
-        RuleFor(x => x.ProductCategoryName)
-            .NotEmpty()
-            .MaximumLength(200)
-            .WithMessage("Product category name is required and must not exceed 200 characters");
-
         RuleFor(x => x.SegmentId)
             .NotEmpty()
             .WithMessage("Segment ID is required");
-
-        RuleFor(x => x.SegmentName)
-            .NotEmpty()
-            .MaximumLength(200)
-            .WithMessage("Segment name is required and must not exceed 200 characters");
 
         RuleFor(x => x.Scenarios)
             .NotEmpty()

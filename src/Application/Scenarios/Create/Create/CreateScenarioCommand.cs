@@ -4,9 +4,7 @@ namespace Application.Scenarios.Create;
 
 public sealed record CreateScenarioCommand(
     Guid ProductCategoryId,
-    string ProductCategoryName,
     Guid SegmentId,
-    string SegmentName,
     List<ScenarioItem> Scenarios
 ) : ICommand<CreateScenarioResponse>;
 
@@ -25,6 +23,6 @@ public sealed record UploadFileItem(
     string StoredFileName,
     string ContentType,
     long Size,
-    Uri Url,  // Changed from string to Uri
+    Uri Url, 
     Guid UploadedBy
 );
