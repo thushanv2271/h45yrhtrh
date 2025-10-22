@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Data;
 using Domain.Authentication;
 using Domain.Branches;
+using Domain.CustomerExposures;
 using Domain.EfaConfigs;
 using Domain.Exports;
 using Domain.Files;
@@ -56,6 +57,8 @@ public sealed class ApplicationDbContext(
     public DbSet<ProductCategory> ProductCategories { get; set; }
     public DbSet<Segment> Segments { get; set; }
     public DbSet<Scenario> Scenarios { get; set; }
+
+    public DbSet<CustomerExposure> CustomerExposures { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
